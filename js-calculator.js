@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', startCalc)
 
+var checkIfReusing = false
+
 function startCalc () {
   var numberSection = document.getElementsByClassName('number-section')[0]
   for (var i = 0; i < numberSection.children.length; i++) {
@@ -65,47 +67,54 @@ function endsInOperator (str) {
 
 function evaluate () {
   var input = document.getElementsByClassName('output')[0].innerHTML.split(' ')
-  // check for brackets
+  // if the input ends in an operator, trim the last empty element created by splitting
+  if (input[input.length - 1] === '') {
+    input.splice(input.length - 1, 1)
+  // check if there's enough arguments to bother evaluating. If there's less than 3 arguments, none of the binary operators can function so may as well do nothing.'
+  } else if (input.length > 2) {
+    // check for brackets
 
-  // check for exponents and resolve them
-  var i = 1
-  while (i < input.length) {
-    if (input[i] === '^') {
-      input[i + 1] = Math.pow(input[i - 1], input[i + 1])
-      input.splice(i - 1, 2)
-      i = 1
-      continue
-    }i += 2
-  }i = 1
-  // check for multiplication/division and resolve them
-  i = 1
-  while (i < input.length) {
-    if (input[i] === 'x') {
-      input[i + 1] = input[i - 1] * input[i + 1]
-      input.splice(i - 1, 2)
-      i = 1
-      continue
-    } if (input[i] === '/') {
-      input[i + 1] = input[i - 1] / input[i + 1]
-      input.splice(i - 1, 2)
-      i = 1
-      continue
-    } i += 2
-  }i = 1
-  // check for addition/subtraction and resolve them
-  while (i < input.length) {
-    if (input[i] === '+') {
-      // using Number() here to avoid accidental string concatonation instead of addition
-      input[i + 1] = Number(input[i - 1]) + Number(input[i + 1])
-      input.splice(i - 1, 2)
-      i = 1
-      continue
-    } if (input[i] === '-') {
-      input[i + 1] = input[i - 1] - input[i + 1]
-      input.splice(i - 1, 2)
-      i = 1
-      continue
-    } i += 2
-  } document.getElementsByClassName('output')[0].innerHTML = input[0]
+    // check for exponents and resolve them
+    var i = 1
+    while (i < input.length) {
+      if (input[i] === '^') {
+        input[i + 1] = Math.pow(input[i - 1], input[i + 1])
+        input.splice(i - 1, 2)
+        i = 1
+        continue
+      }i += 2
+    }i = 1
+    // check for multiplication/division and resolve them
+    i = 1
+    while (i < input.length) {
+      if (input[i] === 'x') {
+        input[i + 1] = input[i - 1] * input[i + 1]
+        input.splice(i - 1, 2)
+        i = 1
+        continue
+      } if (input[i] === '/') {
+        input[i + 1] = input[i - 1] / input[i + 1]
+        input.splice(i - 1, 2)
+        i = 1
+        continue
+      } i += 2
+    }i = 1
+    // check for addition/subtraction and resolve them
+    while (i < input.length) {
+      if (input[i] === '+') {
+        // using Number() here to avoid accidental string concatonation instead of addition
+        input[i + 1] = Number(input[i - 1]) + Number(input[i + 1])
+        input.splice(i - 1, 2)
+        i = 1
+        continue
+      } if (input[i] === '-') {
+        input[i + 1] = input[i - 1] - input[i + 1]
+        input.splice(i - 1, 2)
+        i = 1
+        continue
+      } i += 2
+    } document.getElementsByClassName('output')[0].innerHTML = input[0]
+    checkIfReusing = true
+  }
 }
 
