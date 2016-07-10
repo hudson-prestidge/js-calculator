@@ -1,0 +1,53 @@
+html, body {
+  height: 100%;
+}
+
+.container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  width: 275px;
+  border: 2px black solid;
+  padding: 6px;
+}
+
+button {
+  width: 45px;
+  height: 45px;
+  margin-bottom: 4px;
+}
+
+.number-button {
+}
+
+.misc-section {
+  display: inline-block;
+  margin-left: 15px;
+}
+
+.number-section {
+  margin-left: 15px;
+  display: inline-block;
+}
+
+.operator-section {
+  margin-left: 49px;
+  display: inline-block;
+  width: 53px;
+}
+
+.output {
+  box-sizing: border-box;
+  text-align: center;
+  border: 2px solid black;
+  height: 60px;
+  margin-bottom: 3px;
+  font-size: 1.1em;
+  padding-top: 23px;
+}
+
+#equals-button {
+  margin-left: 98px;
+}
