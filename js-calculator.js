@@ -1,13 +1,5 @@
 document.addEventListener('DOMContentLoaded', startCalc)
 
-var currentOperatorsList = []
-
-//this whole class needs revision, not really being used currently
-function Operator (character) {
-  this.character = character
-  this.firstArgument = getFirstArgument() // this currently doesn't function right! returns empty string every time.
-}
-
 function startCalc () {
   var numberSection = document.getElementsByClassName('number-section')[0]
   for (var i = 0; i < numberSection.children.length; i++) {
@@ -29,14 +21,13 @@ function addNumberButtonListener (button) {
 }
 
 function addOperatorButtonListener (button) {
-  var operator = new Operator(button.innerHTML)
+  var operator = button.innerHTML
   button.addEventListener('click', function () {
     var output = document.getElementsByClassName('output')[0].innerHTML
     if (endsInOperator(output)) {
       clearCharacter()
     }
-    writeToOutput(' ' + operator.character + ' ')
-    currentOperatorsList.push(operator)
+    writeToOutput(' ' + operator + ' ')
   })
 }
 
@@ -48,7 +39,6 @@ function clearCharacter () {
   var output = document.getElementsByClassName('output')[0].innerHTML
   if (endsInOperator(output)) {
     document.getElementsByClassName('output')[0].innerHTML = output.substring(0, output.length - 3)
-    currentOperatorsList.pop()
   } else {
     document.getElementsByClassName('output')[0].innerHTML = output.substring(0, output.length - 1)
   }
@@ -58,10 +48,6 @@ function clearAll () {
   while (document.getElementsByClassName('output')[0].innerHTML.length > 0) {
     clearCharacter()
   }
-}
-
-function getFirstArgument () {
-  return document.getElementsByClassName('output')[0].innerHTML
 }
 
 function endsInOperator (str) {
@@ -116,6 +102,5 @@ function evaluate () {
       continue
     } i += 2
   } document.getElementsByClassName('output')[0].innerHTML = input[0]
-  currentOperatorsList = []
 }
 
