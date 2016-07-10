@@ -24,10 +24,15 @@ function addOperatorButtonListener (button) {
   var operator = button.innerHTML
   button.addEventListener('click', function () {
     var output = document.getElementsByClassName('output')[0].innerHTML
-    if (endsInOperator(output)) {
+    // the logic here seems unwieldy, could use revisiting. currently allows for a - by itself if output is empty, or if there's an open bracket on the end.
+    if ((output.charAt(output.length - 1) === '(' || output.length === 0) && operator === '-') {
+      writeToOutput(operator)
+    } else if (endsInOperator(output)) {
       clearCharacter()
+      writeToOutput(' ' + operator + ' ')
+    } else {
+      writeToOutput(' ' + operator + ' ')
     }
-    writeToOutput(' ' + operator + ' ')
   })
 }
 
