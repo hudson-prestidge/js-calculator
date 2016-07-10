@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', startCalc)
 
 var currentOperatorsList = []
 
+//this whole class needs revision, not really being used currently
 function Operator (character) {
   this.character = character
   this.firstArgument = getFirstArgument() // this currently doesn't function right! returns empty string every time.
@@ -16,6 +17,7 @@ function startCalc () {
   for (var j = 0; j < operatorSection.children.length; j++) {
     addOperatorButtonListener(operatorSection.children[j])
   } document.getElementById('clear-button').addEventListener('click', clearCharacter)
+  document.getElementById('clear-all-button').addEventListener('click', clearAll)
   document.getElementById('equals-button').addEventListener('click', evaluate)
 }
 
@@ -52,6 +54,12 @@ function clearCharacter () {
   }
 }
 
+function clearAll () {
+  while (document.getElementsByClassName('output')[0].innerHTML.length > 0) {
+    clearCharacter()
+  }
+}
+
 function getFirstArgument () {
   return document.getElementsByClassName('output')[0].innerHTML
 }
@@ -66,19 +74,36 @@ function endsInOperator (str) {
 
 function evaluate () {
   var input = document.getElementsByClassName('output')[0].innerHTML.split(' ')
-  var total = Number(input[0])
   // check for brackets
   // check for multiplication/division and resolve them
-  for (var i = 1; i < input.length; i += 2) {
+  var i = 1
+  while (i < input.length) {
     if (input[i] === 'x') {
-      total *= Number(input[i + 1])
-    }
-  }
-  // check for addition/subtraction and resolve them
-  for (var j = 1; j < input.length; j += 2) {
-    if (input[j] === '+') {
-      total += Number(input[j + 1])
-    }
-  } document.getElementsByClassName('output')[0].innerHTML = total
+      input[i + 1] = input[i - 1] * input[i + 1]
+      input.splice(i - 1, 2)
+      i = 1
+      continue
+    } if (input[i] === '/') {
+      input[i + 1] = input[i - 1] / input[i + 1]
+      input.splice(i - 1, 2)
+      i = 1
+      continue
+    } i += 2
+  }i = 1
+  while (i < input.length) {
+    if (input[i] === '+') {
+      // using Number() here to avoid accidental string concatonation instead of addition
+      input[i + 1] = Number(input[i - 1]) + Number(input[i + 1])
+      input.splice(i - 1, 2)
+      i = 1
+      continue
+    } if (input[i] === '-') {
+      input[i + 1] = input[i - 1] - input[i + 1]
+      input.splice(i - 1, 2)
+      i = 1
+      continue
+    } i += 2
+  } document.getElementsByClassName('output')[0].innerHTML = input[0]
   currentOperatorsList = []
 }
+
