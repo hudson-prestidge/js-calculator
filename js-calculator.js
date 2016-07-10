@@ -75,8 +75,19 @@ function endsInOperator (str) {
 function evaluate () {
   var input = document.getElementsByClassName('output')[0].innerHTML.split(' ')
   // check for brackets
-  // check for multiplication/division and resolve them
+
+  // check for exponents and resolve them
   var i = 1
+  while (i < input.length) {
+    if (input[i] === '^') {
+      input[i + 1] = Math.pow(input[i - 1], input[i + 1])
+      input.splice(i - 1, 2)
+      i = 1
+      continue
+    }i += 2
+  }i = 1
+  // check for multiplication/division and resolve them
+  i = 1
   while (i < input.length) {
     if (input[i] === 'x') {
       input[i + 1] = input[i - 1] * input[i + 1]
@@ -90,6 +101,7 @@ function evaluate () {
       continue
     } i += 2
   }i = 1
+  // check for addition/subtraction and resolve them
   while (i < input.length) {
     if (input[i] === '+') {
       // using Number() here to avoid accidental string concatonation instead of addition
