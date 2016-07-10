@@ -13,19 +13,27 @@ function startCalc () {
   } document.getElementById('clear-button').addEventListener('click', clearCharacter)
   document.getElementById('clear-all-button').addEventListener('click', clearAll)
   document.getElementById('equals-button').addEventListener('click', evaluate)
+  document.getElementById('left-bracket-button').addEventListener('click', evaluate)
+  document.getElementById('right-bracket-button').addEventListener('click', evaluate)
+  document.getElementById('decimal-point-button').addEventListener('click', addDecimalPoint)
 }
 
 function addNumberButtonListener (button) {
   var number = button.innerHTML
   button.addEventListener('click', function () {
-    writeToOutput(number)
+    if (checkIfReusing) {
+      clearAll()
+      checkIfReusing = false
+    } writeToOutput(number)
   })
 }
 
 function addOperatorButtonListener (button) {
   var operator = button.innerHTML
   button.addEventListener('click', function () {
-    var output = document.getElementsByClassName('output')[0].innerHTML
+    if (checkIfReusing) {
+      checkIfReusing = false
+    } var output = document.getElementsByClassName('output')[0].innerHTML
     // the logic here seems unwieldy, could use revisiting. currently allows for a - by itself if output is empty, or if there's an open bracket on the end.
     if ((output.charAt(output.length - 1) === '(' || output.length === 0) && operator === '-') {
       writeToOutput(operator)
@@ -54,6 +62,13 @@ function clearCharacter () {
 function clearAll () {
   while (document.getElementsByClassName('output')[0].innerHTML.length > 0) {
     clearCharacter()
+  }
+}
+
+function addDecimalPoint () {
+  var output = document.getElementsByClassName('output')[0].innerHTML.split(' ')
+  if (output[output.length - 1].indexOf('.') === -1) {
+    writeToOutput('.')
   }
 }
 
