@@ -49,6 +49,7 @@ function writeToOutput (x) {
 
 function clearCharacter () {
   var output = document.getElementsByClassName('output')[0].innerHTML
+  // as operators are created with spaces on either side, the clear button should remove those if the last thing added was an operator. Otherwise, just trim one char
   if (endsInOperator(output)) {
     document.getElementsByClassName('output')[0].innerHTML = output.substring(0, output.length - 3)
   } else {
@@ -87,17 +88,21 @@ function solve () {
     args.splice(args.length - 1, 1)
   // check if there's enough arguments to bother evaluating. If there's less than 3 arguments, none of the binary operators can function so may as well do nothing.'
   } else if (args.length > 2) {
+    // resolve operators in BEDMAS order (brackets not yet implemented)
     resolveOperator(args, '^', Math.pow)
-    resolveOperator(args, 'x', multiply)
     resolveOperator(args, '/', divide)
+    resolveOperator(args, 'x', multiply)
     resolveOperator(args, '+', add)
     resolveOperator(args, '-', subtract)
     document.getElementsByClassName('output')[0].innerHTML = args[0]
+    // set checkIfReusingAns to true, so that if the user presses a number/decimal then output will be cleared but if they press an operator the answer will be used
+    // as the first argument for that operator
     checkIfReusingAns = true
   }
 }
 
 function resolveOperator (args, op, fn) {
+  // searches through the odd elements of a given array args for all instances of an operator op, and calls a function fn on the elements directly before and after them
   var i = 1
   while (i < args.length) {
     if (args[i] === op) {
