@@ -30,17 +30,21 @@ function addNumberButtonListener (button) {
 function addOperatorButtonListener (button) {
   var operator = button.innerHTML
   button.addEventListener('click', function () {
-    checkIfReusingAns = false
-    var output = document.getElementsByClassName('output')[0].innerHTML
-    if (output.length === 0 && operator === '-') {
-      writeToOutput(operator)
-    } else if (endsInOperator(output)) {
-      clearCharacter()
-      writeToOutput(' ' + operator + ' ')
-    } else {
-      writeToOutput(' ' + operator + ' ')
-    }
+    writeOperator(operator)
   })
+}
+
+function writeOperator (operator) {
+  checkIfReusingAns = false
+  var output = document.getElementsByClassName('output')[0].innerHTML
+  if (output.length === 0 && operator === '-') {
+    writeToOutput(operator)
+  } else if (endsInOperator(output)) {
+    clearCharacter()
+    writeToOutput(' ' + operator + ' ')
+  } else {
+    writeToOutput(' ' + operator + ' ')
+  }
 }
 
 function writeToOutput (x) {
