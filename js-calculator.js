@@ -13,8 +13,8 @@ function startCalc () {
   } document.getElementById('clear-button').addEventListener('click', clearCharacter)
   document.getElementById('clear-all-button').addEventListener('click', clearAll)
   document.getElementById('equals-button').addEventListener('click', evaluate)
-  document.getElementById('left-bracket-button').addEventListener('click', evaluate)
-  document.getElementById('right-bracket-button').addEventListener('click', evaluate)
+ // document.getElementById('left-bracket-button').addEventListener('click', evaluate)
+ // document.getElementById('right-bracket-button').addEventListener('click', evaluate)
   document.getElementById('decimal-point-button').addEventListener('click', addDecimalPoint)
 }
 
@@ -67,7 +67,10 @@ function clearAll () {
 
 function addDecimalPoint () {
   var output = document.getElementsByClassName('output')[0].innerHTML.split(' ')
-  if (output[output.length - 1].indexOf('.') === -1) {
+  if (checkIfReusing) {
+    clearAll()
+    checkIfReusing = false
+  } if (output[output.length - 1].indexOf('.') === -1) {
     writeToOutput('.')
   }
 }
