@@ -87,38 +87,12 @@ function solve () {
     args.splice(args.length - 1, 1)
   // check if there's enough arguments to bother evaluating. If there's less than 3 arguments, none of the binary operators can function so may as well do nothing.'
   } else if (args.length > 2) {
-    // check for exponents and resolve them
     resolveOperator(args, '^', Math.pow)
-    // check for multiplication/division and resolve them
-    var i = 1
-    while (i < args.length) {
-      if (args[i] === 'x') {
-        args[i + 1] = args[i - 1] * args[i + 1]
-        args.splice(i - 1, 2)
-        i = 1
-        continue
-      } if (args[i] === '/') {
-        args[i + 1] = args[i - 1] / args[i + 1]
-        args.splice(i - 1, 2)
-        i = 1
-        continue
-      } i += 2
-    }i = 1
-    // check for addition/subtraction and resolve them
-    while (i < args.length) {
-      if (args[i] === '+') {
-        // using Number() here to avoid accidental string concatonation instead of addition
-        args[i + 1] = Number(args[i - 1]) + Number(args[i + 1])
-        args.splice(i - 1, 2)
-        i = 1
-        continue
-      } if (args[i] === '-') {
-        args[i + 1] = args[i - 1] - args[i + 1]
-        args.splice(i - 1, 2)
-        i = 1
-        continue
-      } i += 2
-    } document.getElementsByClassName('output')[0].innerHTML = args[0]
+    resolveOperator(args, 'x', multiply)
+    resolveOperator(args, '/', divide)
+    resolveOperator(args, '+', add)
+    resolveOperator(args, '-', subtract)
+    document.getElementsByClassName('output')[0].innerHTML = args[0]
     checkIfReusing = true
   }
 }
@@ -136,7 +110,7 @@ function resolveOperator (args, op, fn) {
 }
 
 function add (x, y) {
-  return Number(x + y)
+  return (Number(x) + Number(y))
 }
 
 function subtract (x, y) {
@@ -147,6 +121,6 @@ function multiply (x, y) {
   return x * y
 }
 
-function divide (x, y) { 
+function divide (x, y) {
   return x / y
 }
