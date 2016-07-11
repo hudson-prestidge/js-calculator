@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', startCalc)
 
-var checkIfReusing = false
+var checkIfReusingAns = false
 var operators = ['+', '-', '/', 'x', '^']
 
 function startCalc () {
@@ -20,9 +20,9 @@ function startCalc () {
 function addNumberButtonListener (button) {
   var number = button.innerHTML
   button.addEventListener('click', function () {
-    if (checkIfReusing) {
+    if (checkIfReusingAns) {
       clearAll()
-      checkIfReusing = false
+      checkIfReusingAns = false
     } writeToOutput(number)
   })
 }
@@ -30,7 +30,7 @@ function addNumberButtonListener (button) {
 function addOperatorButtonListener (button) {
   var operator = button.innerHTML
   button.addEventListener('click', function () {
-    checkIfReusing = false
+    checkIfReusingAns = false
     var output = document.getElementsByClassName('output')[0].innerHTML
     if (output.length === 0 && operator === '-') {
       writeToOutput(operator)
@@ -64,9 +64,9 @@ function clearAll () {
 
 function addDecimalPoint () {
   var output = document.getElementsByClassName('output')[0].innerHTML.split(' ')
-  if (checkIfReusing) {
+  if (checkIfReusingAns) {
     clearAll()
-    checkIfReusing = false
+    checkIfReusingAns = false
   } if (output[output.length - 1].indexOf('.') === -1) {
     writeToOutput('.')
   }
@@ -93,7 +93,7 @@ function solve () {
     resolveOperator(args, '+', add)
     resolveOperator(args, '-', subtract)
     document.getElementsByClassName('output')[0].innerHTML = args[0]
-    checkIfReusing = true
+    checkIfReusingAns = true
   }
 }
 
