@@ -12,7 +12,7 @@ function startCalc () {
     addOperatorButtonListener(operatorSection.children[j])
   } document.getElementById('clear-button').addEventListener('click', clearCharacter)
   document.getElementById('clear-all-button').addEventListener('click', clearAll)
-  document.getElementById('equals-button').addEventListener('click', evaluate)
+  document.getElementById('equals-button').addEventListener('click', solve)
   document.getElementById('decimal-point-button').addEventListener('click', addDecimalPoint)
 }
 
@@ -29,10 +29,8 @@ function addNumberButtonListener (button) {
 function addOperatorButtonListener (button) {
   var operator = button.innerHTML
   button.addEventListener('click', function () {
-    if (checkIfReusing) {
-      checkIfReusing = false
-    } var output = document.getElementsByClassName('output')[0].innerHTML
-    // the logic here seems unwieldy, could use revisiting. currently allows for a - by itself if output is empty
+    checkIfReusing = false
+    var output = document.getElementsByClassName('output')[0].innerHTML
     if (output.length === 0 && operator === '-') {
       writeToOutput(operator)
     } else if (endsInOperator(output)) {
@@ -81,55 +79,55 @@ function endsInOperator (str) {
     str.substring(str.length - 3, str.length) === ' ^ ')
 }
 
-function evaluate () {
-  var input = document.getElementsByClassName('output')[0].innerHTML.split(' ')
-  // if the input ends in an operator, trim the last empty element created by splitting
-  if (input[input.length - 1] === '') {
-    input.splice(input.length - 1, 1)
+function solve () {
+  var args = document.getElementsByClassName('output')[0].innerHTML.split(' ')
+  // if the args ends in an operator, trim the last empty element created by splitting
+  if (args[args.length - 1] === '') {
+    args.splice(args.length - 1, 1)
   // check if there's enough arguments to bother evaluating. If there's less than 3 arguments, none of the binary operators can function so may as well do nothing.'
-  } else if (input.length > 2) {
+  } else if (args.length > 2) {
     // check for brackets
 
     // check for exponents and resolve them
     var i = 1
-    while (i < input.length) {
-      if (input[i] === '^') {
-        input[i + 1] = Math.pow(input[i - 1], input[i + 1])
-        input.splice(i - 1, 2)
+    while (i < args.length) {
+      if (args[i] === '^') {
+        args[i + 1] = Math.pow(args[i - 1], args[i + 1])
+        args.splice(i - 1, 2)
         i = 1
         continue
       }i += 2
     }i = 1
     // check for multiplication/division and resolve them
     i = 1
-    while (i < input.length) {
-      if (input[i] === 'x') {
-        input[i + 1] = input[i - 1] * input[i + 1]
-        input.splice(i - 1, 2)
+    while (i < args.length) {
+      if (args[i] === 'x') {
+        args[i + 1] = args[i - 1] * args[i + 1]
+        args.splice(i - 1, 2)
         i = 1
         continue
-      } if (input[i] === '/') {
-        input[i + 1] = input[i - 1] / input[i + 1]
-        input.splice(i - 1, 2)
+      } if (args[i] === '/') {
+        args[i + 1] = args[i - 1] / args[i + 1]
+        args.splice(i - 1, 2)
         i = 1
         continue
       } i += 2
     }i = 1
     // check for addition/subtraction and resolve them
-    while (i < input.length) {
-      if (input[i] === '+') {
+    while (i < args.length) {
+      if (args[i] === '+') {
         // using Number() here to avoid accidental string concatonation instead of addition
-        input[i + 1] = Number(input[i - 1]) + Number(input[i + 1])
-        input.splice(i - 1, 2)
+        args[i + 1] = Number(args[i - 1]) + Number(args[i + 1])
+        args.splice(i - 1, 2)
         i = 1
         continue
-      } if (input[i] === '-') {
-        input[i + 1] = input[i - 1] - input[i + 1]
-        input.splice(i - 1, 2)
+      } if (args[i] === '-') {
+        args[i + 1] = args[i - 1] - args[i + 1]
+        args.splice(i - 1, 2)
         i = 1
         continue
       } i += 2
-    } document.getElementsByClassName('output')[0].innerHTML = input[0]
+    } document.getElementsByClassName('output')[0].innerHTML = args[0]
     checkIfReusing = true
   }
 }
