@@ -87,20 +87,10 @@ function solve () {
     args.splice(args.length - 1, 1)
   // check if there's enough arguments to bother evaluating. If there's less than 3 arguments, none of the binary operators can function so may as well do nothing.'
   } else if (args.length > 2) {
-    // check for brackets
-
     // check for exponents and resolve them
-    var i = 1
-    while (i < args.length) {
-      if (args[i] === '^') {
-        args[i + 1] = Math.pow(args[i - 1], args[i + 1])
-        args.splice(i - 1, 2)
-        i = 1
-        continue
-      }i += 2
-    }i = 1
+    resolveOperator(args, '^', Math.pow)
     // check for multiplication/division and resolve them
-    i = 1
+    var i = 1
     while (i < args.length) {
       if (args[i] === 'x') {
         args[i + 1] = args[i - 1] * args[i + 1]
@@ -133,3 +123,30 @@ function solve () {
   }
 }
 
+function resolveOperator (args, op, fn) {
+  var i = 1
+  while (i < args.length) {
+    if (args[i] === op) {
+      args[i + 1] = fn(args[i - 1], args[i + 1])
+      args.splice(i - 1, 2)
+      i = 1
+      continue
+    }i += 2
+  } i = 1
+}
+
+function add (x, y) {
+  return Number(x + y)
+}
+
+function subtract (x, y) {
+  return x - y
+}
+
+function multiply (x, y) {
+  return x * y
+}
+
+function divide (x, y) { 
+  return x / y
+}
