@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', startCalc)
 
 var checkIfReusing = false
+var operators = ['+', '-', '/', 'x', '^']
 
 function startCalc () {
   var numberSection = document.getElementsByClassName('number-section')[0]
@@ -72,11 +73,11 @@ function addDecimalPoint () {
 }
 
 function endsInOperator (str) {
-  return (str.substring(str.length - 3, str.length) === ' x ' ||
-    str.substring(str.length - 3, str.length) === ' - ' ||
-    str.substring(str.length - 3, str.length) === ' / ' ||
-    str.substring(str.length - 3, str.length) === ' + ' ||
-    str.substring(str.length - 3, str.length) === ' ^ ')
+  for (var i = 0; i < operators.length; i++) {
+    if (str.substring(str.length - 3, str.length) === ' ' + operators[i] + ' ') {
+      return true
+    }
+  } return false
 }
 
 function solve () {
