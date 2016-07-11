@@ -30,6 +30,7 @@ button {
 .number-section {
   margin-left: 15px;
   display: inline-block;
+  width: 143px;
 }
 
 .operator-section {
@@ -49,5 +50,5 @@ button {
 }
 
 #equals-button {
-  margin-left: 196px;
+  margin-left: 49px;
 }
