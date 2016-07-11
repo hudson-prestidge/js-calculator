@@ -13,8 +13,6 @@ function startCalc () {
   } document.getElementById('clear-button').addEventListener('click', clearCharacter)
   document.getElementById('clear-all-button').addEventListener('click', clearAll)
   document.getElementById('equals-button').addEventListener('click', evaluate)
- // document.getElementById('left-bracket-button').addEventListener('click', evaluate)
- // document.getElementById('right-bracket-button').addEventListener('click', evaluate)
   document.getElementById('decimal-point-button').addEventListener('click', addDecimalPoint)
 }
 
@@ -34,8 +32,8 @@ function addOperatorButtonListener (button) {
     if (checkIfReusing) {
       checkIfReusing = false
     } var output = document.getElementsByClassName('output')[0].innerHTML
-    // the logic here seems unwieldy, could use revisiting. currently allows for a - by itself if output is empty, or if there's an open bracket on the end.
-    if ((output.charAt(output.length - 1) === '(' || output.length === 0) && operator === '-') {
+    // the logic here seems unwieldy, could use revisiting. currently allows for a - by itself if output is empty
+    if (output.length === 0 && operator === '-') {
       writeToOutput(operator)
     } else if (endsInOperator(output)) {
       clearCharacter()
